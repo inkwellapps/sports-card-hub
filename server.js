@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json({ limit: '25mb' }));
 app.use(express.static(__dirname));
 
-const KEY = process.env.CARDGRADER_API_KEY;
+const KEY = process.env.CARDGRADER_API_KEY || 'cgk_nbYNQ8FxFyBkwHCnMINbM4YuhUn0FKKWD0JME0YJ';
 const BASE = 'https://cardgrader.ai/v1';
 
 function dataURLtoBlob(d) {
