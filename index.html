@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sports Card Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,600;1,700;1,800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#070d1a; --panel:#0f1a30; --panel2:#16233f; --ink:#eaf1ff; --ink2:#8ea3c6;
+    --line:#233350; --brand:#2f7bff; --brand-ink:#66a4ff; --gold:#f5b301;
+    --up:#37b06e; --down:#e2704a;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;line-height:1.5;
+    background:radial-gradient(1200px 620px at 82% -12%,rgba(47,123,255,.16),transparent 60%),
+      radial-gradient(900px 520px at -5% 108%,rgba(245,179,1,.07),transparent 55%),var(--bg)}
+  .disp{font-family:"Barlow Condensed",system-ui,sans-serif;font-style:italic;font-weight:800;text-transform:uppercase}
+  .mono{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
+  .wrap{max-width:1000px;margin:0 auto;padding:24px 18px 60px}
+  header{display:flex;align-items:center;gap:12px;border-bottom:2px solid var(--line);padding-bottom:16px;margin-bottom:24px}
+  .mark{width:36px;height:46px;border-radius:6px;flex:none;background:linear-gradient(150deg,var(--brand),#1e5fd0 45%,var(--gold));box-shadow:0 0 18px -2px rgba(47,123,255,.6)}
+  header h1{font-family:"Barlow Condensed";font-style:italic;font-weight:800;text-transform:uppercase;letter-spacing:1px;font-size:30px;margin:0;line-height:.95}
+  header span{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink2);font-weight:600;font-style:normal;font-family:"IBM Plex Sans"}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+  @media(max-width:760px){.grid{grid-template-columns:1fr}}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px}
+  .panel h2{font-family:"Barlow Condensed";font-style:italic;font-weight:800;text-transform:uppercase;letter-spacing:.5px;font-size:20px;margin:0 0 4px}
+  .panel .sub{font-size:12px;color:var(--ink2);margin:0 0 16px}
+  .shots{display:flex;gap:14px}
+  .shot{flex:1}
+  .shot label.lab{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--ink2);font-weight:700;display:block;margin-bottom:6px}
+  .drop{border:2px dashed var(--line);border-radius:12px;background:var(--panel2);aspect-ratio:3/4;display:grid;place-items:center;text-align:center;cursor:pointer;overflow:hidden;position:relative}
+  .drop:hover{border-color:var(--brand)}
+  .drop .ph{color:var(--ink2);font-size:12px;padding:10px}
+  .drop .ph .ic{font-size:26px;display:block;margin-bottom:4px}
+  .drop img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .btn{font-family:"Barlow Condensed";font-style:italic;font-weight:800;text-transform:uppercase;letter-spacing:.5px;font-size:17px;border:none;border-radius:10px;padding:14px;width:100%;cursor:pointer;background:linear-gradient(120deg,var(--brand),#6b4fd6);color:#fff;margin-top:16px}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink2);font-size:14px}
+  .status{font-size:13px;color:var(--ink2);margin-top:12px;min-height:20px}
+  .status.err{color:var(--down)}
+  .status.ok{color:var(--up)}
+  .res{margin-top:2px}
+  .res .row{display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--line)}
+  .res .row:last-child{border-bottom:none}
+  .res .k{font-size:12px;color:var(--ink2)}
+  .res .v{font-family:"IBM Plex Mono";font-weight:600;font-size:16px}
+  .res .v.big{font-size:26px;color:var(--gold)}
+  .res .v.sale{font-size:26px;color:var(--brand-ink)}
+  .subg{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+  .subg span{font-size:11px;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:4px 8px;color:var(--ink2)}
+  .just{font-size:12px;color:var(--ink2);margin-top:12px;line-height:1.5;background:var(--panel2);border-radius:8px;padding:10px}
+  .albumhead{display:flex;justify-content:space-between;align-items:baseline;margin:36px 0 14px}
+  .albumhead h2{font-family:"Barlow Condensed";font-style:italic;font-weight:800;text-transform:uppercase;font-size:24px;margin:0}
+  .albgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .card .pic{aspect-ratio:3/4;background:var(--panel2);position:relative}
+  .card .pic img{width:100%;height:100%;object-fit:cover}
+  .card .pic .g{position:absolute;top:8px;left:8px;font-family:"Barlow Condensed";font-style:italic;font-weight:800;font-size:12px;color:#fff;background:rgba(7,13,26,.85);padding:3px 8px;border-radius:6px;text-transform:uppercase}
+  .card .b{padding:12px}
+  .card .plr{font-family:"Barlow Condensed";font-style:italic;font-weight:700;font-size:17px;line-height:1.1}
+  .card .meta{font-size:11px;color:var(--ink2);text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
+  .card .ask{font-family:"IBM Plex Mono";font-weight:600;font-size:19px;margin-top:8px}
+  .card .ask small{display:block;font-family:"IBM Plex Sans";font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink2);font-weight:600}
+  .empty{color:var(--ink2);font-size:13px;padding:24px;border:2px dashed var(--line);border-radius:12px;text-align:center}
+  footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--ink2);text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="mark"></div>
+    <div><h1>Sports&nbsp;Card&nbsp;Hub</h1><span>AI grade &amp; price &middot; powered by CardGrader</span></div>
+  </header>
+
+  <div class="grid">
+    <div class="panel">
+      <h2>Grade a card</h2>
+      <p class="sub">Snap the front and back — the system reads it, grades it, and prices it through CardGrader.</p>
+      <div class="shots">
+        <div class="shot">
+          <label class="lab">Front</label>
+          <label class="drop" id="dropFront"><span class="ph"><span class="ic">📷</span>Front of card</span><input type="file" accept="image/*" id="fileFront" hidden></label>
+        </div>
+        <div class="shot">
+          <label class="lab">Back</label>
+          <label class="drop" id="dropBack"><span class="ph"><span class="ic">📷</span>Back of card</span><input type="file" accept="image/*" id="fileBack" hidden></label>
+        </div>
+      </div>
+      <button class="btn" id="go" disabled>✨ Grade &amp; Price</button>
+      <div class="status" id="status"></div>
+    </div>
+
+    <div class="panel" id="resultPanel" hidden>
+      <h2>Result</h2>
+      <p class="sub" id="resId">—</p>
+      <div class="res">
+        <div class="row"><span class="k">PSA-estimated grade (AI)</span><span class="v big mono" id="rGrade">—</span></div>
+        <div class="subg" id="rSubg"></div>
+        <div class="row"><span class="k">Market value <small>at that grade</small></span><span class="v mono" id="rValue">—</span></div>
+        <div class="row"><span class="k">Sale price <small>market × 85%</small></span><span class="v sale mono" id="rSale">—</span></div>
+      </div>
+      <div class="just" id="rJust" hidden></div>
+      <button class="btn" id="add" hidden>＋ Add to Album</button>
+    </div>
+  </div>
+
+  <div class="albumhead"><h2>The Showcase</h2><span class="mono" id="count" style="color:var(--ink2);font-size:13px">0 cards</span></div>
+  <div id="album"></div>
+
+  <footer>Grades are AI estimates from photos (via CardGrader), not official PSA grades. Verify before selling. &middot; Sports Card Hub</footer>
+</div>
+
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id);};
+  function money(n){if(n==null||isNaN(n))return '—';return '$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:(n%1?2:0),maximumFractionDigits:2});}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+
+  var frontData=null, backData=null, pending=null;
+
+  function wireDrop(dropId, fileId, set){
+    var drop=$(dropId), file=$(fileId);
+    file.addEventListener('change',function(e){
+      var f=e.target.files&&e.target.files[0]; if(!f)return;
+      var rd=new FileReader();
+      rd.onload=function(){
+        var im=new Image();
+        im.onload=function(){
+          var max=1000,w=im.width,h=im.height;
+          if(w>h&&w>max){h=Math.round(h*max/w);w=max;} else if(h>=w&&h>max){w=Math.round(w*max/h);h=max;}
+          var cv=document.createElement('canvas');cv.width=w;cv.height=h;cv.getContext('2d').drawImage(im,0,0,w,h);
+          var d=cv.toDataURL('image/jpeg',0.85);
+          set(d);
+          var img=drop.querySelector('img')||document.createElement('img');
+          img.src=d; if(!img.parentNode)drop.appendChild(img);
+          var ph=drop.querySelector('.ph'); if(ph)ph.style.display='none';
+          $('go').disabled=!(frontData&&backData);
+        };
+        im.src=rd.result;
+      };
+      rd.readAsDataURL(f);
+    });
+  }
+  wireDrop('dropFront','fileFront',function(d){frontData=d;});
+  wireDrop('dropBack','fileBack',function(d){backData=d;});
+
+  $('go').addEventListener('click',function(){
+    if(!(frontData&&backData))return;
+    var st=$('status'); st.className='status'; st.textContent='Reading the card through CardGrader… (30–90 sec)';
+    $('go').disabled=true;
+    fetch('/api/grade',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({front:frontData,back:backData,modules:'full'})})
+      .then(function(r){return r.json().then(function(j){return {ok:r.ok,j:j};});})
+      .then(function(o){
+        if(!o.ok){st.className='status err';st.textContent=(o.j&&o.j.error)||'Grading failed.';$('go').disabled=false;return;}
+        showResult(o.j);
+        st.className='status ok';st.textContent='Done — review and add it to the album.';
+        $('go').disabled=false;
+      })
+      .catch(function(e){st.className='status err';st.textContent='Network error: '+e.message;$('go').disabled=false;});
+  });
+
+  function showResult(r){
+    var id=r.identification||{}, g=r.grading||{}, v=r.value||{}, m=r.market||{};
+    var player=id.subject||id.name||'Unidentified card';
+    var meta=[id.year,id.set,id.number&&('#'+id.number),id.parallel].filter(Boolean).join(' · ');
+    var grade=(g.predictedGrade!=null?g.predictedGrade:g.grade);
+    var value=(v.gradedEstimate!=null?v.gradedEstimate:v.rawEstimate);
+    var sale=value!=null?Math.round(value*0.85*100)/100:null;
+
+    $('resId').textContent=player+(meta?' — '+meta:'');
+    $('rGrade').textContent=grade!=null?('PSA est. '+grade):'—';
+    var sg=g.subGrades||{};
+    $('rSubg').innerHTML=['centering','corners','edges','surface'].filter(function(k){return sg[k]!=null;})
+      .map(function(k){return '<span>'+k+' '+sg[k]+'</span>';}).join('');
+    $('rValue').textContent=money(value);
+    $('rSale').textContent=money(sale);
+    var just=g.justification||g.summary||m.insights||'';
+    if(just){$('rJust').hidden=false;$('rJust').textContent=just;} else $('rJust').hidden=true;
+    $('resultPanel').hidden=false;
+    $('add').hidden=false;
+
+    pending={player:player,meta:meta,grade:grade,value:value,sale:sale,img:frontData,createdAt:Date.now()};
+  }
+
+  $('add').addEventListener('click',function(){
+    if(!pending)return;
+    var list=load(); list.unshift(pending); save(list);
+    pending=null; $('add').hidden=true; $('resultPanel').hidden=true;
+    frontData=backData=null;
+    ['dropFront','dropBack'].forEach(function(id){var d=$(id);var img=d.querySelector('img');if(img)img.remove();var ph=d.querySelector('.ph');if(ph)ph.style.display='';});
+    $('go').disabled=true; $('status').textContent='';
+    render();
+  });
+
+  var LS='sch.live.cards';
+  function load(){try{return JSON.parse(localStorage.getItem(LS)||'[]');}catch(e){return [];}}
+  function save(l){try{localStorage.setItem(LS,JSON.stringify(l));}catch(e){}}
+
+  function render(){
+    var list=load();
+    $('count').textContent=list.length+(list.length===1?' card':' cards');
+    var al=$('album');
+    if(!list.length){al.innerHTML='<div class="empty">No cards yet — grade one above and add it here.</div>';return;}
+    al.innerHTML='<div class="albgrid">'+list.map(function(c){
+      return '<div class="card"><div class="pic">'+(c.img?'<img src="'+c.img+'" alt="">':'')
+        +(c.grade!=null?'<span class="g">PSA est. '+esc(c.grade)+'</span>':'')+'</div>'
+        +'<div class="b"><div class="plr">'+esc(c.player||'Card')+'</div>'
+        +'<div class="meta">'+(esc(c.meta)||'&nbsp;')+'</div>'
+        +'<div class="ask">'+money(c.sale)+'<small>Asking</small></div></div></div>';
+    }).join('')+'</div>';
+  }
+  render();
+})();
+</script>
+</body>
+</html>
